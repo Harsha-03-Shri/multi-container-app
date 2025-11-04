@@ -30,7 +30,7 @@ pipeline {
                     // Wait a bit for containers to start
                     sh 'sleep 10'
                     // Test Flask response
-                    sh 'curl -f http://localhost:5000 || exit 1'
+                    sh 'curl -f http://localhost:8000 || exit 1'
                 }
             }
         }
