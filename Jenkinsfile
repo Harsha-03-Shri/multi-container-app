@@ -17,8 +17,8 @@ pipeline {
         stage('Build Images') {
             steps {
                 script {
-                    // Build images defined in docker-compose.yml
                     sh 'docker-compose build'
+                    sh 'docker tag multi-container-app-web:latest ${DOCKER_IMAGE}:latest'
                 }
             }
         }
@@ -27,9 +27,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker-compose up -d'
-                    // Wait a bit for containers to start
                     sh 'sleep 10'
-                    // Test Flask response
                     sh 'curl -f http://localhost:8000 || exit 1'
                 }
             }
@@ -48,9 +46,23 @@ pipeline {
 
         stage('Cleanup Containers') {
             steps {
-                sh 'docker-compose down'
+                sh 'docker-compose down --volumes --remove-orphans'
             }
         }
+
+        // Optional deploy
+        // stage('Deploy') {
+        //     steps {
+        //         script {
+        //             sh '''
+        //             docker pull ${DOCKER_IMAGE}:latest
+        //             docker stop flask_prod || true
+        //             docker rm flask_prod || true
+        //             docker run -d -p 8000:8000 --name flask_prod ${DOCKER_IMAGE}:latest
+        //             '''
+        //         }
+        //     }
+        // }
     }
 
     post {
