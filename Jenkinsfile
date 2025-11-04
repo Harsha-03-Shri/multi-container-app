@@ -10,7 +10,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/yourusername/multi-container-app.git'
+                    url: 'https://github.com/Harsha-03-Shri/multi-container-app.git'
             }
         }
 
