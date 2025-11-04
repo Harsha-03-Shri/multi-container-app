@@ -14,14 +14,14 @@ pipeline {
             }
         }
 
-        stage('Build Images') {
-            steps {
-                script {
-                    bat 'docker-compose build'
-                    bat 'docker tag multi-container-app-web:latest ${DOCKER_IMAGE}:latest'
-                }
+    stage('Build Images') {
+        steps {
+            script {
+                bat 'docker-compose build'
+                bat 'docker tag multi-container-pipeline-web:latest %DOCKER_IMAGE%:latest'
             }
         }
+    }
 
         stage('Run Containers for Testing') {
             steps {
@@ -33,16 +33,14 @@ pipeline {
             }
         }
 
-        stage('Push Web Image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
-                        def image = docker.image("${DOCKER_IMAGE}:latest")
-                        image.push()
-                    }
-                }
+    stage('Push Web Image to Docker Hub') {
+        steps {
+            script {
+                bat 'docker login -u %DOCKERHUB_CREDENTIALS_USR% -p %DOCKERHUB_CREDENTIALS_PSW%'
+                bat 'docker push %DOCKER_IMAGE%:latest'
             }
         }
+    }
 
         stage('Cleanup Containers') {
             steps {
