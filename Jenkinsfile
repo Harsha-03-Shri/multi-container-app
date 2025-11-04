@@ -17,8 +17,8 @@ pipeline {
         stage('Build Images') {
             steps {
                 script {
-                    sh 'docker-compose build'
-                    sh 'docker tag multi-container-app-web:latest ${DOCKER_IMAGE}:latest'
+                    bat 'docker-compose build'
+                    bat 'docker tag multi-container-app-web:latest ${DOCKER_IMAGE}:latest'
                 }
             }
         }
@@ -26,9 +26,9 @@ pipeline {
         stage('Run Containers for Testing') {
             steps {
                 script {
-                    sh 'docker-compose up -d'
-                    sh 'sleep 10'
-                    sh 'curl -f http://localhost:8000 || exit 1'
+                    bat 'docker-compose up -d'
+                    bat 'sleep 10'
+                    bat 'curl -f http://localhost:8000 || exit 1'
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
 
         stage('Cleanup Containers') {
             steps {
-                sh 'docker-compose down --volumes --remove-orphans'
+                bat 'docker-compose down --volumes --remove-orphans'
             }
         }
 
