@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        DOCKER_IMAGE = "yourdockerhubusername/multi-container-flask"
+        DOCKER_IMAGE = "harsha0306/multi-container-flask"
     }
 
     stages {
