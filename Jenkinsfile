@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     bat 'docker-compose up -d'
-                    bat 'sleep 10'
+                    bat 'timeout /t 10 /nobreak >nul'
                     bat 'curl -f http://localhost:8000 || exit 1'
                 }
             }
